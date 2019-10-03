@@ -229,15 +229,13 @@ public class GameEngine extends SurfaceView implements Runnable {
         if (this.holder.getSurface().isValid()) {
             this.canvas = this.holder.lockCanvas();
 
-            //----------------
-            paintbrush.setColor(Color.BLACK);
-            this.canvas.drawRect(550,1500, 950, 1550, paintbrush);
-            paintbrush.setColor(Color.BLACK);
-
             // configure the drawing tools
             this.canvas.drawColor(Color.argb(255,255,255,255));
             paintbrush.setColor(Color.WHITE);
 
+            paintbrush.setColor(Color.BLACK);
+            this.canvas.drawRect(550,1500, 950, 1550, paintbrush);
+            paintbrush.setColor(Color.BLACK);
 
             // DRAW THE PLAYER HITBOX
             // ------------------------
