@@ -21,7 +21,7 @@ public class Item {
         this.xPosition = x;
         this.yPosition = y;
 
-        // 2. Set the default image - all enemies have same image
+
         this.image = BitmapFactory.decodeResource(context.getResources(), R.drawable.poop64);
 
         // 3. Set the default hitbox - all enemies have same hitbox

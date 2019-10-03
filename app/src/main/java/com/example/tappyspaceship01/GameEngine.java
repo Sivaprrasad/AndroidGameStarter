@@ -76,8 +76,9 @@ public class GameEngine extends SurfaceView implements Runnable {
         this.printScreenInfo();
 
         this.player = new Player(getContext(), 1500, 500);
-        this.poop = new Item(getContext(), 100, 500);
-        this.rainbow = new Item(getContext(), 200, 600);
+        this.poop = new Item(getContext(), 100, 200);
+        this.rainbow = new Item(getContext(), 100, 400);
+        this.candy = new Item(getContext(), 100, 600);
     }
 
 
@@ -143,12 +144,35 @@ public class GameEngine extends SurfaceView implements Runnable {
         // MOVE THE HITBOX (recalcluate the position of the hitbox)
         this.poop.updateHitbox();
 
-        if (this.poop.getxPosition() <= 0) {
+        if (this.poop.getxPosition() >= 1500) {
             // restart the enemy in the starting position
-            this.poop.setxPosition(100);
-            this.poop.setyPosition(500);
+            this.poop.setxPosition(20);
+            this.poop.setyPosition(200);
             this.poop.updateHitbox();
         }
+
+        this.rainbow.setxPosition(this.rainbow.getxPosition()+30);
+        // MOVE THE HITBOX (recalcluate the position of the hitbox)
+        this.rainbow.updateHitbox();
+
+        if (this.rainbow.getxPosition() >= 1500) {
+            // restart the enemy in the starting position
+            this.rainbow.setxPosition(20);
+            this.rainbow.setyPosition(400);
+            this.rainbow.updateHitbox();
+        }
+
+        this.candy.setxPosition(this.candy.getxPosition()+20);
+        // MOVE THE HITBOX (recalcluate the position of the hitbox)
+        this.candy.updateHitbox();
+
+        if (this.candy.getxPosition() >= 1500) {
+            // restart the enemy in the starting position
+            this.candy.setxPosition(20);
+            this.candy.setyPosition(600);
+            this.candy.updateHitbox();
+        }
+
 
         // @TODO:  Check collisions between poop and player
         if (this.player.getHitbox().intersect(this.poop.getHitbox()) == true) {
@@ -161,12 +185,42 @@ public class GameEngine extends SurfaceView implements Runnable {
             // -------
             // 1. Restart the player
             // 2. Restart the player's hitbox
-            this.player.setxPosition(1500);
-            this.player.setyPosition(500);
-            this.player.updateHitbox();
+            this.poop.setxPosition(20);
+            this.poop.setyPosition(200);
+            this.poop.updateHitbox();
 
             // decrease the lives
             lives = lives - 1;
+
+        }
+
+        // @TODO:  Check collisions between rainbow and player
+        if (this.player.getHitbox().intersect(this.rainbow.getHitbox()) == true) {
+            // the enemy and player are colliding
+            Log.d(TAG, "++++++RAINBOW AND PLAYER COLLIDING!");
+            this.rainbow.setxPosition(20);
+            this.rainbow.setyPosition(400);
+            this.rainbow.updateHitbox();
+
+            // @TODO: What do you want to do next?
+
+            // Add Score
+            score = score + 1;
+
+        }
+
+        // @TODO:  Check collisions between candy and player
+        if (this.player.getHitbox().intersect(this.candy.getHitbox()) == true) {
+            // the enemy and player are colliding
+            Log.d(TAG, "++++++CANDY AND PLAYER COLLIDING!");
+            this.candy.setxPosition(20);
+            this.candy.setyPosition(600);
+            this.candy.updateHitbox();
+
+            // @TODO: What do you want to do next?
+
+            // Add Score
+            score = score + 1;
 
         }
     }
@@ -176,6 +230,9 @@ public class GameEngine extends SurfaceView implements Runnable {
             this.canvas = this.holder.lockCanvas();
 
             //----------------
+            paintbrush.setColor(Color.BLACK);
+            this.canvas.drawRect(550,1500, 950, 1550, paintbrush);
+            paintbrush.setColor(Color.BLACK);
 
             // configure the drawing tools
             this.canvas.drawColor(Color.argb(255,255,255,255));
@@ -199,6 +256,16 @@ public class GameEngine extends SurfaceView implements Runnable {
             // 2. draw the enemy's hitbox
             canvas.drawRect(poop.getHitbox(), paintbrush);
 
+            // draw the rainbow graphic on the screen
+            canvas.drawBitmap(rainbow.getImage(), rainbow.getxPosition(), rainbow.getyPosition(), paintbrush);
+            // 2. draw the rainbows hitbox
+            canvas.drawRect(rainbow.getHitbox(), paintbrush);
+
+            // draw the candy graphic on the screen
+            canvas.drawBitmap(candy.getImage(), candy.getxPosition(), candy.getyPosition(), paintbrush);
+            // 2. draw the candy hitbox
+            canvas.drawRect(candy.getHitbox(), paintbrush);
+
             paintbrush.setColor(Color.BLUE);
             paintbrush.setTextSize(60);
             canvas.drawText("Lives: " + lives,
@@ -207,8 +274,8 @@ public class GameEngine extends SurfaceView implements Runnable {
                     paintbrush
             );
             canvas.drawText("Score: " + score,
-                    900,
-                    600,
+                    800,
+                    500,
                     paintbrush
             );
 
@@ -240,9 +307,11 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         if (userAction == MotionEvent.ACTION_DOWN) {
             fingerAction = "mousedown";
+            this.player.setyPosition(this.player.getyPosition()+25);
         }
         else if (userAction == MotionEvent.ACTION_UP) {
             fingerAction = "mouseup";
+            this.player.setyPosition(this.player.getyPosition()-25);
         }
         return true;
     }
