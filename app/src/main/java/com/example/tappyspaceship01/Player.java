@@ -15,12 +15,13 @@ public class Player {
     private int yPosition;
 
     public Player(Context context, int x, int y) {
+
         // 1. set up the initial position of the Enemy
         this.xPosition = x;
         this.yPosition = y;
 
-        // 2. Set the default image - all enemies have same image
-        this.image = BitmapFactory.decodeResource(context.getResources(), R.drawable.player_ship);
+
+        this.image = BitmapFactory.decodeResource(context.getResources(), R.drawable.dino64);
 
         // 3. Set the default hitbox - all enemies have same hitbox
         this.hitbox = new Rect(
@@ -63,5 +64,12 @@ public class Player {
 
     public void setyPosition(int yPosition) {
         this.yPosition = yPosition;
+    }
+
+    public void updateHitbox() {
+        this.hitbox.left = this.xPosition;
+        this.hitbox.top = this.yPosition;
+        this.hitbox.right = this.xPosition + this.image.getWidth();
+        this.hitbox.bottom = this.yPosition + this.image.getHeight();
     }
 }
