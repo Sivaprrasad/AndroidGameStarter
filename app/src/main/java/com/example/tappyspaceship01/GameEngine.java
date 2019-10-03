@@ -39,6 +39,14 @@ public class GameEngine extends SurfaceView implements Runnable {
     Canvas canvas;
     Paint paintbrush;
 
+    //
+    Player player;
+    Item poop;
+    Item rainbow;
+    Item candy;
+
+    int lives = 3;
+    int score = 0;
 
 
     // -----------------------------------
@@ -66,6 +74,10 @@ public class GameEngine extends SurfaceView implements Runnable {
         this.screenHeight = h;
 
         this.printScreenInfo();
+
+        this.player = new Player(getContext(), 1500, 500);
+        this.poop = new Item(getContext(), 100, 500);
+        this.rainbow = new Item(getContext(), 200, 600);
     }
 
 
@@ -76,12 +88,13 @@ public class GameEngine extends SurfaceView implements Runnable {
     }
 
     private void spawnPlayer() {
-        //@TODO: Start the player at the left side of screen
+        //@TODO: Start the player at the right side of screen
     }
     private void spawnEnemyShips() {
         Random random = new Random();
 
         //@TODO: Place the enemies in a random location
+
 
     }
 
@@ -120,6 +133,42 @@ public class GameEngine extends SurfaceView implements Runnable {
     // ------------------------------
 
     public void updatePositions() {
+//
+
+        // MAKE ENEMY MOVE
+        // - enemy moves right forever
+        // - when enemy touches LEFT wall, respawn on RIGHT SIDE
+        this.poop.setxPosition(this.poop.getxPosition()+25);
+
+        // MOVE THE HITBOX (recalcluate the position of the hitbox)
+        this.poop.updateHitbox();
+
+        if (this.poop.getxPosition() <= 0) {
+            // restart the enemy in the starting position
+            this.poop.setxPosition(100);
+            this.poop.setyPosition(500);
+            this.poop.updateHitbox();
+        }
+
+        // @TODO:  Check collisions between poop and player
+        if (this.player.getHitbox().intersect(this.poop.getHitbox()) == true) {
+            // the enemy and player are colliding
+            Log.d(TAG, "++++++ENEMY AND PLAYER COLLIDING!");
+
+            // @TODO: What do you want to do next?
+
+            // RESTART THE PLAYER IN ORIGINAL POSITION
+            // -------
+            // 1. Restart the player
+            // 2. Restart the player's hitbox
+            this.player.setxPosition(1500);
+            this.player.setyPosition(500);
+            this.player.updateHitbox();
+
+            // decrease the lives
+            lives = lives - 1;
+
+        }
     }
 
     public void redrawSprites() {
@@ -139,6 +188,29 @@ public class GameEngine extends SurfaceView implements Runnable {
             paintbrush.setColor(Color.BLUE);
             paintbrush.setStyle(Paint.Style.STROKE);
             paintbrush.setStrokeWidth(5);
+
+            // draw player graphic on screen
+            canvas.drawBitmap(player.getImage(), player.getxPosition(), player.getyPosition(), paintbrush);
+            // draw the player's hitbox
+            canvas.drawRect(player.getHitbox(), paintbrush);
+
+            // draw the enemy graphic on the screen
+            canvas.drawBitmap(poop.getImage(), poop.getxPosition(), poop.getyPosition(), paintbrush);
+            // 2. draw the enemy's hitbox
+            canvas.drawRect(poop.getHitbox(), paintbrush);
+
+            paintbrush.setColor(Color.BLUE);
+            paintbrush.setTextSize(60);
+            canvas.drawText("Lives: " + lives,
+                    1100,
+                    800,
+                    paintbrush
+            );
+            canvas.drawText("Score: " + score,
+                    900,
+                    600,
+                    paintbrush
+            );
 
             //----------------
             this.holder.unlockCanvasAndPost(canvas);
@@ -165,13 +237,13 @@ public class GameEngine extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent event) {
         int userAction = event.getActionMasked();
         //@TODO: What should happen when person touches the screen?
-        if (userAction == MotionEvent.ACTION_DOWN) {
 
+        if (userAction == MotionEvent.ACTION_DOWN) {
+            fingerAction = "mousedown";
         }
         else if (userAction == MotionEvent.ACTION_UP) {
-
+            fingerAction = "mouseup";
         }
-
         return true;
     }
 }
