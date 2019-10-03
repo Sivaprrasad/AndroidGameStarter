@@ -305,11 +305,11 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         if (userAction == MotionEvent.ACTION_DOWN) {
             fingerAction = "mousedown";
-            this.player.setyPosition(this.player.getyPosition()+25);
+            this.player.setyPosition(this.player.getyPosition()+75);
         }
         else if (userAction == MotionEvent.ACTION_UP) {
             fingerAction = "mouseup";
-            this.player.setyPosition(this.player.getyPosition()-25);
+            this.player.setyPosition(this.player.getyPosition()-75);
         }
         return true;
     }
