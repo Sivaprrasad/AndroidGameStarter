@@ -10,6 +10,7 @@ public class Item {
     // PROPERTIES:
     // Image
     // Hitbox
+
     private Bitmap image;
     private Rect hitbox;
 
@@ -23,6 +24,8 @@ public class Item {
 
 
         this.image = BitmapFactory.decodeResource(context.getResources(), R.drawable.poop64);
+        this.image = BitmapFactory.decodeResource(context.getResources(), R.drawable.rainbow64);
+        this.image = BitmapFactory.decodeResource(context.getResources(), R.drawable.candy64);
 
         // 3. Set the default hitbox - all enemies have same hitbox
         this.hitbox = new Rect(
