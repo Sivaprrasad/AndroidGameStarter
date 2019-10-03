@@ -17,6 +17,9 @@ import java.util.Random;
 
 public class GameEngine extends SurfaceView implements Runnable {
 
+    //Test Commit & Push - To Make sure git is connected to submit the REPO link in the moodle.
+    //Added Assets to the drwable folder
+
     // Android debug variables
     final static String TAG="DINO-RAINBOWS";
 
